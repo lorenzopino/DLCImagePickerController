@@ -45,6 +45,12 @@
 -(void) sharedInit {
 	outputJPEGQuality = 1.0;
 	requestedImageSize = CGSizeZero;
+    _blurToggleEnabled = YES;
+    _flashToggleEnabled = YES;
+    _filtersToggleEnabled = YES;
+    _libraryToggleEnabled = YES;
+    _cameraToggleEnabled = YES;
+    
 }
 
 -(id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -70,15 +76,20 @@
 -(void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    cameraToggleButton.hidden = !_cameraToggleEnabled;
+    blurToggleButton.hidden = !_blurToggleEnabled;
+    filtersToggleButton.hidden = !_filtersToggleEnabled;
+    libraryToggleButton.hidden = !_libraryToggleEnabled;
+    flashToggleButton.hidden = !_flashToggleEnabled;
+
     self.wantsFullScreenLayout = YES;
     //set background color
-    self.view.backgroundColor = [UIColor colorWithPatternImage:
-                                 [UIImage imageNamed:@"micro_carbon"]];
+    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"micro_carbon"]];
     
-    self.photoBar.backgroundColor = [UIColor colorWithPatternImage:
-                                     [UIImage imageNamed:@"photo_bar"]];
+    //self.photoBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"photo_bar"]];
     
-    self.topBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"photo_bar"]];
+    //self.topBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"photo_bar"]];
     //button states
     [self.blurToggleButton setSelected:NO];
     [self.filtersToggleButton setSelected:NO];
@@ -495,7 +506,7 @@
         [self.flashToggleButton setEnabled:YES];
     }
     
-    [self.photoCaptureButton setImage:[UIImage imageNamed:@"camera-icon"] forState:UIControlStateNormal];
+    [self.photoCaptureButton setImage:[UIImage imageNamed:@"camera-button"] forState:UIControlStateNormal];
     [self.photoCaptureButton setTitle:nil forState:UIControlStateNormal];
     
     if ([self.filtersToggleButton isSelected]) {

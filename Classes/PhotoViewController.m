@@ -46,6 +46,9 @@
 -(void) takePhoto:(id)sender{
     DLCImagePickerController *picker = [[DLCImagePickerController alloc] init];
     picker.delegate = self;
+    picker.filtersToggleEnabled = NO;
+    picker.blurToggleEnabled = NO;
+    
     [self presentModalViewController:picker animated:YES];
 }
 

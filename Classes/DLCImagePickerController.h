@@ -42,4 +42,12 @@
 @property (nonatomic, assign) CGFloat outputJPEGQuality;
 @property (nonatomic, assign) CGSize requestedImageSize;
 
+@property (nonatomic) BOOL blurToggleEnabled;
+@property (nonatomic) BOOL flashToggleEnabled;
+@property (nonatomic) BOOL libraryToggleEnabled;
+@property (nonatomic) BOOL cameraToggleEnabled;
+@property (nonatomic) BOOL filtersToggleEnabled;
+
+
+
 @end
