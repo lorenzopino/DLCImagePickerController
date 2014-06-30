@@ -72,7 +72,6 @@
 		6A5D9A3015E01598001FAD14 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5D9A2F15E01598001FAD14 /* QuartzCore.framework */; };
 		6A5D9A3215E015A1001FAD14 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5D9A3115E015A1001FAD14 /* OpenGLES.framework */; };
 		6A5D9A3415E015B3001FAD14 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5D9A3315E015B3001FAD14 /* AVFoundation.framework */; };
-		6A5D9A5715E01BD7001FAD14 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5D9A5215E01B72001FAD14 /* libGPUImage.a */; };
 		6A5D9A5915E01DA4001FAD14 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5D9A5815E01DA4001FAD14 /* AssetsLibrary.framework */; };
 		6A5D9A8815E02429001FAD14 /* DLCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D9A8715E02429001FAD14 /* DLCImagePickerController.m */; };
 		6A5D9A8B15E02504001FAD14 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D9A8A15E02504001FAD14 /* PhotoViewController.m */; };
@@ -90,35 +89,13 @@
 		7D1E64B915E1FA2F005A9E09 /* crossprocess.acv in Resources */ = {isa = PBXBuildFile; fileRef = 7D1E64B715E1FA2F005A9E09 /* crossprocess.acv */; };
 		7DEB4DC615E063420078BFAD /* sample1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DEB4DC515E063420078BFAD /* sample1.jpg */; };
 		7DFAE1BA15E22A9F00C8236F /* aqua.acv in Resources */ = {isa = PBXBuildFile; fileRef = 7DFAE1B915E22A9F00C8236F /* aqua.acv */; };
+		996F974FF3334029AFFE7B74 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C399658FD6034391B6D4C218 /* libPods.a */; };
 		EDC0303E1960B623003DD44F /* FullScreenImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC0303D1960B623003DD44F /* FullScreenImagePickerController.m */; };
 		EDFF11B81960C5DC004C4BF5 /* FilterThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDFF11B71960C5DC004C4BF5 /* FilterThumbnailView.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		6A5D9A5115E01B72001FAD14 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
-			remoteInfo = GPUImage;
-		};
-		6A5D9A5315E01B72001FAD14 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCF1A34414DDB1EC00852800;
-			remoteInfo = GPUImageTests;
-		};
-		6A5D9A5515E01BC2001FAD14 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BCF1A33314DDB1EC00852800;
-			remoteInfo = GPUImage;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		3007FAF9769443748C023B21 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		6A0D09FF165A1CBE0028E1B6 /* DLCBlurOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLCBlurOverlayView.h; sourceTree = "<group>"; };
 		6A0D0A00165A1CBE0028E1B6 /* DLCBlurOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLCBlurOverlayView.m; sourceTree = "<group>"; };
 		6A0D0A0D165A1FFC0028E1B6 /* focus-crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "focus-crosshair.png"; sourceTree = "<group>"; };
@@ -189,7 +166,6 @@
 		6A5D9A2F15E01598001FAD14 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6A5D9A3115E015A1001FAD14 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		6A5D9A3315E015B3001FAD14 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = GPUImage/framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		6A5D9A5815E01DA4001FAD14 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6A5D9A8615E02429001FAD14 /* DLCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLCImagePickerController.h; sourceTree = "<group>"; };
 		6A5D9A8715E02429001FAD14 /* DLCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLCImagePickerController.m; sourceTree = "<group>"; };
@@ -210,6 +186,7 @@
 		7D1E64B715E1FA2F005A9E09 /* crossprocess.acv */ = {isa = PBXFileReference; lastKnownFileType = file; name = crossprocess.acv; path = Filters/crossprocess.acv; sourceTree = "<group>"; };
 		7DEB4DC515E063420078BFAD /* sample1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample1.jpg; path = Samples/sample1.jpg; sourceTree = "<group>"; };
 		7DFAE1B915E22A9F00C8236F /* aqua.acv */ = {isa = PBXFileReference; lastKnownFileType = file; name = aqua.acv; path = Filters/aqua.acv; sourceTree = "<group>"; };
+		C399658FD6034391B6D4C218 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC0303C1960B623003DD44F /* FullScreenImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenImagePickerController.h; sourceTree = "<group>"; };
 		EDC0303D1960B623003DD44F /* FullScreenImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImagePickerController.m; sourceTree = "<group>"; };
 		EDFF11B61960C5DC004C4BF5 /* FilterThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterThumbnailView.h; sourceTree = "<group>"; };
@@ -222,7 +199,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A5D9A5915E01DA4001FAD14 /* AssetsLibrary.framework in Frameworks */,
-				6A5D9A5715E01BD7001FAD14 /* libGPUImage.a in Frameworks */,
 				6A5D9A3415E015B3001FAD14 /* AVFoundation.framework in Frameworks */,
 				6A5D9A3215E015A1001FAD14 /* OpenGLES.framework in Frameworks */,
 				6A5D9A3015E01598001FAD14 /* QuartzCore.framework in Frameworks */,
@@ -231,6 +207,7 @@
 				6A5D9A1515E0152D001FAD14 /* UIKit.framework in Frameworks */,
 				6A5D9A1715E0152D001FAD14 /* Foundation.framework in Frameworks */,
 				6A5D9A1915E0152D001FAD14 /* CoreGraphics.framework in Frameworks */,
+				996F974FF3334029AFFE7B74 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +250,7 @@
 				6A5D9A1A15E0152D001FAD14 /* DLCImagePickerController */,
 				6A5D9A1315E0152D001FAD14 /* Frameworks */,
 				6A5D9A1115E0152D001FAD14 /* Products */,
+				3007FAF9769443748C023B21 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -289,7 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				6A5D9A5815E01DA4001FAD14 /* AssetsLibrary.framework */,
-				6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */,
 				6A5D9A3315E015B3001FAD14 /* AVFoundation.framework */,
 				6A5D9A3115E015A1001FAD14 /* OpenGLES.framework */,
 				6A5D9A2F15E01598001FAD14 /* QuartzCore.framework */,
@@ -298,6 +275,7 @@
 				6A5D9A1415E0152D001FAD14 /* UIKit.framework */,
 				6A5D9A1615E0152D001FAD14 /* Foundation.framework */,
 				6A5D9A1815E0152D001FAD14 /* CoreGraphics.framework */,
+				C399658FD6034391B6D4C218 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -322,15 +300,6 @@
 				6A5D9A2215E0152D001FAD14 /* DLCImagePickerController-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6A5D9A4915E01B72001FAD14 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6A5D9A5215E01B72001FAD14 /* libGPUImage.a */,
-				6A5D9A5415E01B72001FAD14 /* GPUImageTests.octest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		6A5D9A8515E02429001FAD14 /* Classes */ = {
@@ -467,14 +436,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A5D9A2815E0152E001FAD14 /* Build configuration list for PBXNativeTarget "DLCImagePickerController" */;
 			buildPhases = (
+				5371B73937C94B41A3812095 /* Check Pods Manifest.lock */,
 				6A5D9A0C15E0152D001FAD14 /* Sources */,
 				6A5D9A0D15E0152D001FAD14 /* Frameworks */,
 				6A5D9A0E15E0152D001FAD14 /* Resources */,
+				962130EDE20640178D867005 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6A5D9A5615E01BC2001FAD14 /* PBXTargetDependency */,
 			);
 			name = DLCImagePickerController;
 			productName = DLCImagePickerController;
@@ -500,35 +470,12 @@
 			mainGroup = 6A5D9A0515E0152D001FAD14;
 			productRefGroup = 6A5D9A1115E0152D001FAD14 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6A5D9A4915E01B72001FAD14 /* Products */;
-					ProjectRef = 6A5D9A4815E01B72001FAD14 /* GPUImage.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				6A5D9A0F15E0152D001FAD14 /* DLCImagePickerController */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6A5D9A5215E01B72001FAD14 /* libGPUImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libGPUImage.a;
-			remoteRef = 6A5D9A5115E01B72001FAD14 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A5D9A5415E01B72001FAD14 /* GPUImageTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests.octest;
-			remoteRef = 6A5D9A5315E01B72001FAD14 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6A5D9A0E15E0152D001FAD14 /* Resources */ = {
@@ -607,6 +554,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5371B73937C94B41A3812095 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		962130EDE20640178D867005 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6A5D9A0C15E0152D001FAD14 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -624,14 +604,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		6A5D9A5615E01BC2001FAD14 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GPUImage;
-			targetProxy = 6A5D9A5515E01BC2001FAD14 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		6A5D9A1D15E0152D001FAD14 /* InfoPlist.strings */ = {
@@ -702,6 +674,7 @@
 		};
 		6A5D9A2915E0152E001FAD14 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3007FAF9769443748C023B21 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLCImagePickerController/DLCImagePickerController-Prefix.pch";
@@ -714,6 +687,7 @@
 		};
 		6A5D9A2A15E0152E001FAD14 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3007FAF9769443748C023B21 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLCImagePickerController/DLCImagePickerController-Prefix.pch";

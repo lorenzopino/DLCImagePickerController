@@ -15,6 +15,9 @@
 
 #define kStaticBlurSize 2.0f
 
+#define isIOS6 floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1
+#define isIOS7 floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1
+
 @implementation DLCImagePickerController {
     GPUImageStillCamera *stillCamera;
     GPUImageOutput<GPUImageInput> *filter;
@@ -287,7 +290,7 @@
         [filter addTarget:self.imageView];
     }
     
-    [filter prepareForImageCapture];
+    [filter useNextFrameForImageCapture];
     
 }
 
@@ -351,13 +354,20 @@
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
+    [imagePickerController setWantsFullScreenLayout:YES];
     [self presentViewController:imagePickerController animated:YES completion:NULL];
 }
 
+#ifdef __IPHONE_7_0
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    if (isIOS7) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
 }
+#endif
+
+
 
 -(IBAction)toggleFlash:(UIButton *)button{
     [button setSelected:!button.selected];
@@ -461,13 +471,13 @@
             finalFilter = captureResize;
         }
         
-        [finalFilter prepareForImageCapture];
+        [finalFilter useNextFrameForImageCapture];
         
         [stillCamera capturePhotoAsImageProcessedUpToFilter:finalFilter withCompletionHandler:completion];
     } else {
         // A workaround inside capturePhotoProcessedUpToFilter:withImageOnGPUHandler: would cause the above method to fail,
         // so we just grap the current crop filter output as an aproximation (the size won't match trough)
-        UIImage *img = [cropFilter imageFromCurrentlyProcessedOutput];
+        UIImage *img = [cropFilter imageFromCurrentFramebuffer];
         completion(img, nil);
     }
 }
@@ -495,7 +505,7 @@
         
         [staticPicture processImage];
         
-        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
 
         NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
