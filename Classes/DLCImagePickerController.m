@@ -8,6 +8,10 @@
 
 #import "DLCImagePickerController.h"
 #import "DLCGrayscaleContrastFilter.h"
+#import "FullScreenImagePickerController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "FilterThumbnailView.h"
+
 
 #define kStaticBlurSize 2.0f
 
@@ -125,6 +129,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [super viewWillAppear:animated];
+    [self updateLastPhotoThumbnail];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -137,32 +142,16 @@
 }
 
 -(void) loadFilters {
-    for(int i = 0; i < 10; i++) {
-        UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]] forState:UIControlStateNormal];
-        button.frame = CGRectMake(10+i*(60+10), 5.0f, 60.0f, 60.0f);
-        button.layer.cornerRadius = 7.0f;
+   for(int i = 0; i < 10; i++) {
+        FilterThumbnailView *button = [[FilterThumbnailView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]] andIndex:i];
+        CGRect rect = CGRectMake((THUMBS_PADDING+i*(THUMBS_WIDTH+THUMBS_PADDING)), (self.filterScrollView.frame.size.height-button.frame.size.height)/2, button.frame.size.width, button.frame.size.height);
+        button.frame = rect;
+       
+        UITapGestureRecognizer *tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(filterClicked:)];
+        [button addGestureRecognizer:tapRec];
         
-        //use bezier path instead of maskToBounds on button.layer
-        UIBezierPath *bi = [UIBezierPath bezierPathWithRoundedRect:button.bounds
-                                                 byRoundingCorners:UIRectCornerAllCorners
-                                                       cornerRadii:CGSizeMake(7.0,7.0)];
-        
-        CAShapeLayer *maskLayer = [CAShapeLayer layer];
-        maskLayer.frame = button.bounds;
-        maskLayer.path = bi.CGPath;
-        button.layer.mask = maskLayer;
-        
-        button.layer.borderWidth = 1;
-        button.layer.borderColor = [[UIColor blackColor] CGColor];
-        
-        [button addTarget:self
-                   action:@selector(filterClicked:)
-         forControlEvents:UIControlEventTouchUpInside];
-        button.tag = i;
-        [button setTitle:@"*" forState:UIControlStateSelected];
         if(i == 0){
-            [button setSelected:YES];
+            [button showBorder:YES];
         }
 		[self.filterScrollView addSubview:button];
 	}
@@ -202,20 +191,39 @@
    
 }
 
--(void) filterClicked:(UIButton *) sender {
-    for(UIView *view in self.filterScrollView.subviews){
-        if([view isKindOfClass:[UIButton class]]){
-            [(UIButton *)view setSelected:NO];
+-(void) filterClicked:(UITapGestureRecognizer *) sender {
+    UIView *selectedFilterView = sender.view;
+    [self selectFilter:selectedFilterView];
+
+}
+
+- (void) didtapOnThumbnail: (UITapGestureRecognizer *)recognizer{
+}
+
+-(void) selectFilter:(UIView*)thumb{
+    [self removeAllTargets];
+    for(FilterThumbnailView *t in self.filterScrollView.subviews){
+        if (t == thumb) {
+            [t showBorder:YES];
+            selectedFilter = thumb.tag;
+            [self setFilter:thumb.tag];
+            [self prepareFilter];
+            CGPoint scrollTo = CGPointMake(t.center.x - self.filterScrollView.frame.size.width/2, 0);
+            if (scrollTo.x >= 0 && scrollTo.x <= self.filterScrollView.contentSize.width - self.filterScrollView.frame.size.width) {
+                [self.filterScrollView setContentOffset:CGPointMake(t.center.x - self.filterScrollView.frame.size.width/2, 0) animated:YES];
+            }else if(scrollTo.x < 0){
+                [self.filterScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            }else if (scrollTo.x > self.filterScrollView.contentSize.width - self.filterScrollView.frame.size.width){
+                [self.filterScrollView setContentOffset:CGPointMake(self.filterScrollView.contentSize.width - self.filterScrollView.frame.size.width, 0) animated:YES];
+            }
+        }else{
+            [t showBorder:NO];
         }
     }
     
-    [sender setSelected:YES];
-    [self removeAllTargets];
-    
-    selectedFilter = sender.tag;
-    [self setFilter:sender.tag];
-    [self prepareFilter];
+
 }
+
 
 
 -(void) setFilter:(int) index {
@@ -339,11 +347,16 @@
         [self removeAllTargets];
     }
     
-    UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+    FullScreenImagePickerController* imagePickerController = [[FullScreenImagePickerController alloc] init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
     [self presentViewController:imagePickerController animated:YES completion:NULL];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 -(IBAction)toggleFlash:(UIButton *)button{
@@ -634,7 +647,7 @@
     self.filtersBackgroundImageView.frame.size.height-3;
     
     self.filterScrollView.hidden = NO;
-    self.filtersBackgroundImageView.hidden = NO;
+    self.filtersBackgroundImageView.hidden = YES;
     [UIView animateWithDuration:0.10
                           delay:0.05
                         options: UIViewAnimationOptionCurveEaseOut
@@ -772,5 +785,60 @@
 }
 
 #endif
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+-(void)updateLastPhotoThumbnail{
+    NSString *imagePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"camera_roll_thumb.png"];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+        [libraryToggleButton setImage:[UIImage imageWithContentsOfFile:imagePath] forState:UIControlStateNormal];
+    }else{
+        [libraryToggleButton setImage:nil forState:UIControlStateNormal];
+    }
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+        [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
+                                     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+                                         if (nil != group) {
+                                             // be sure to filter the group so you only get photos
+                                             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                                             
+                                             if (group.numberOfAssets > 0) {
+                                                 [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
+                                                                         options:0
+                                                                      usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                                                                          if (nil != result) {
+                                                                              ALAssetRepresentation *repr = [result defaultRepresentation];
+                                                                              // this is the most recent saved photo
+                                                                              UIImage *img = [UIImage imageWithCGImage:[repr fullScreenImage]];
+                                                                              // we only need the first (most recent) photo -- stop the enumeration
+                                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                  [libraryToggleButton setImage:img forState:UIControlStateNormal];
+                                                                              });
+                                                                              NSData *imageData = UIImageJPEGRepresentation([UIImage imageWithCGImage:img.CGImage], 1.0);
+                                                                              NSString *writePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"camera_roll_thumb.png"];
+                                                                              if (![imageData writeToFile:writePath atomically:YES]) {
+                                                                                  // failure
+                                                                                  NSLog(@"image save failed to path %@", writePath);
+                                                                              } else {
+                                                                                  // success.
+                                                                              }
+                                                                              *stop = YES;
+                                                                          }
+                                                                      }];
+                                             }
+                                         }
+                                         
+                                         *stop = NO;
+                                     } failureBlock:^(NSError *error) {
+                                         NSLog(@"error: %@", error);
+                                     }];
+    });
+    
+}
+
 
 @end

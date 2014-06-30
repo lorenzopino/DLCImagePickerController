@@ -90,6 +90,8 @@
 		7D1E64B915E1FA2F005A9E09 /* crossprocess.acv in Resources */ = {isa = PBXBuildFile; fileRef = 7D1E64B715E1FA2F005A9E09 /* crossprocess.acv */; };
 		7DEB4DC615E063420078BFAD /* sample1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DEB4DC515E063420078BFAD /* sample1.jpg */; };
 		7DFAE1BA15E22A9F00C8236F /* aqua.acv in Resources */ = {isa = PBXBuildFile; fileRef = 7DFAE1B915E22A9F00C8236F /* aqua.acv */; };
+		EDC0303E1960B623003DD44F /* FullScreenImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC0303D1960B623003DD44F /* FullScreenImagePickerController.m */; };
+		EDFF11B81960C5DC004C4BF5 /* FilterThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDFF11B71960C5DC004C4BF5 /* FilterThumbnailView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +210,10 @@
 		7D1E64B715E1FA2F005A9E09 /* crossprocess.acv */ = {isa = PBXFileReference; lastKnownFileType = file; name = crossprocess.acv; path = Filters/crossprocess.acv; sourceTree = "<group>"; };
 		7DEB4DC515E063420078BFAD /* sample1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample1.jpg; path = Samples/sample1.jpg; sourceTree = "<group>"; };
 		7DFAE1B915E22A9F00C8236F /* aqua.acv */ = {isa = PBXFileReference; lastKnownFileType = file; name = aqua.acv; path = Filters/aqua.acv; sourceTree = "<group>"; };
+		EDC0303C1960B623003DD44F /* FullScreenImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenImagePickerController.h; sourceTree = "<group>"; };
+		EDC0303D1960B623003DD44F /* FullScreenImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImagePickerController.m; sourceTree = "<group>"; };
+		EDFF11B61960C5DC004C4BF5 /* FilterThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterThumbnailView.h; sourceTree = "<group>"; };
+		EDFF11B71960C5DC004C4BF5 /* FilterThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterThumbnailView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -441,6 +447,10 @@
 		D2506222176226B4009DAE39 /* DLCImagePickerViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EDFF11B61960C5DC004C4BF5 /* FilterThumbnailView.h */,
+				EDFF11B71960C5DC004C4BF5 /* FilterThumbnailView.m */,
+				EDC0303C1960B623003DD44F /* FullScreenImagePickerController.h */,
+				EDC0303D1960B623003DD44F /* FullScreenImagePickerController.m */,
 				6A5D9A8615E02429001FAD14 /* DLCImagePickerController.h */,
 				6A5D9A8715E02429001FAD14 /* DLCImagePickerController.m */,
 				6A0D09FF165A1CBE0028E1B6 /* DLCBlurOverlayView.h */,
@@ -602,10 +612,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDC0303E1960B623003DD44F /* FullScreenImagePickerController.m in Sources */,
 				6A5D9A2115E0152D001FAD14 /* main.m in Sources */,
 				6A5D9A2515E0152E001FAD14 /* AppDelegate.m in Sources */,
 				6A5D9A8815E02429001FAD14 /* DLCImagePickerController.m in Sources */,
 				6A5D9A8B15E02504001FAD14 /* PhotoViewController.m in Sources */,
+				EDFF11B81960C5DC004C4BF5 /* FilterThumbnailView.m in Sources */,
 				7D0E5AB815E209AD009D19C9 /* DLCGrayscaleContrastFilter.m in Sources */,
 				6A0D0A01165A1CBE0028E1B6 /* DLCBlurOverlayView.m in Sources */,
 			);
