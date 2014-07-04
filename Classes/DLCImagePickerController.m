@@ -29,6 +29,7 @@
     BOOL hasBlur;
     int selectedFilter;
     dispatch_once_t showLibraryOnceToken;
+    FilterThumbnailView *noFilterButton;
 }
 
 @synthesize delegate,
@@ -147,6 +148,9 @@
 -(void) loadFilters {
    for(int i = 0; i < 10; i++) {
         FilterThumbnailView *button = [[FilterThumbnailView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]] andIndex:i];
+       if (i == 0) {
+           noFilterButton = button;
+       }
         CGRect rect = CGRectMake((THUMBS_PADDING+i*(THUMBS_WIDTH+THUMBS_PADDING)), (self.filterScrollView.frame.size.height-button.frame.size.height)/2, button.frame.size.width, button.frame.size.height);
         button.frame = rect;
        
@@ -169,6 +173,8 @@
         
         stillCamera = [[GPUImageStillCamera alloc] initWithSessionPreset:AVCaptureSessionPresetPhoto cameraPosition:AVCaptureDevicePositionBack];
                 
+        stillCamera.horizontallyMirrorFrontFacingCamera = YES;
+
         stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
         runOnMainQueueWithoutDeadlocking(^{
             [stillCamera startCameraCapture];
@@ -489,8 +495,8 @@
         isStatic = YES;
         
         [self.libraryToggleButton setHidden:YES];
-        [self.cameraToggleButton setEnabled:NO];
-        [self.flashToggleButton setEnabled:NO];
+        [self.cameraToggleButton setHidden:YES];
+        [self.flashToggleButton setHidden:YES];
         [self prepareForCapture];
         
     } else {
@@ -503,6 +509,8 @@
             processUpTo = filter;
         }
         
+        [staticPicture addTarget:processUpTo];
+        [processUpTo useNextFrameForImageCapture];
         [staticPicture processImage];
         
         UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
@@ -513,6 +521,7 @@
     }
 }
 
+
 -(IBAction) retakePhoto:(UIButton *)button {
     [self.retakeButton setHidden:YES];
     [self.libraryToggleButton setHidden:NO];
@@ -522,11 +531,14 @@
     [self removeAllTargets];
     [stillCamera startCameraCapture];
     [self.cameraToggleButton setEnabled:YES];
+    [self.cameraToggleButton setHidden:NO];
     
     if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]
        && stillCamera
        && [stillCamera.inputCamera hasTorch]) {
         [self.flashToggleButton setEnabled:YES];
+        [self.flashToggleButton setHidden:NO];
+        
     }
     
     [self.photoCaptureButton setImage:[UIImage imageNamed:@"camera-button"] forState:UIControlStateNormal];
@@ -535,8 +547,11 @@
     if ([self.filtersToggleButton isSelected]) {
         [self hideFilters];
     }
-    
-    [self setFilter:selectedFilter];
+    if (noFilterButton) {
+        [self selectFilter:noFilterButton];
+    }
+    //selectedFilter = 0;
+    //[self setFilter:selectedFilter];
     [self prepareFilter];
 }
 
@@ -767,8 +782,8 @@
         staticPictureOriginalOrientation = outputImage.imageOrientation;
         isStatic = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
-        [self.cameraToggleButton setEnabled:NO];
-        [self.flashToggleButton setEnabled:NO];
+        [self.cameraToggleButton setHidden:YES];
+        [self.flashToggleButton setHidden:YES];
         [self prepareStaticFilter];
         [self.photoCaptureButton setHidden:NO];
         [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];

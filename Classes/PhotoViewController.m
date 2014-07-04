@@ -8,6 +8,7 @@
 
 #import "PhotoViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "Categories.h"
 
 @interface PhotoViewController ()
 
@@ -62,8 +63,22 @@
     [self dismissModalViewControllerAnimated:YES];
     
     if (info) {
+        //Write to Library
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library writeImageDataToSavedPhotosAlbum:[info objectForKey:@"data"] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error)
+        UIImage *image = [UIImage imageWithData:[info objectForKey:@"data"]];
+        UIImage *image120 = [image resizedImageToSize:CGSizeMake(120, 120)];
+        UIImage *image60 = [image resizedImageToSize:CGSizeMake(60, 60)];
+        
+        [library writeImageToSavedPhotosAlbum:image60.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+            
+        }];
+        
+        [library writeImageToSavedPhotosAlbum:image120.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+            
+        }];
+
+        
+        /*[library writeImageDataToSavedPhotosAlbum:[info objectForKey:@"data"] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error)
          {
              if (error) {
                  NSLog(@"ERROR: the image failed to be written");
@@ -71,7 +86,14 @@
              else {
                  NSLog(@"PHOTO SAVED - assetURL: %@", assetURL);
              }
-         }];
+         }];*/
+        
+        //Write to path
+        NSData *imageData = [info objectForKey:@"data"];
+        NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentPath = [[searchPaths lastObject] stringByAppendingPathComponent:@"image.png"];
+
+        [imageData writeToFile:documentPath atomically:YES];
     }
 }
 
