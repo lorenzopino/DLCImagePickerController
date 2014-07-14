@@ -566,7 +566,7 @@
         }else{
             [info setValue:@"cameraRoll" forKey:@"source"];
         }
-        [self.delegate imagePickerController:self didFinishPickingMediaWithInfo:info];
+        [self.delegate dlcImagePickerController:self didFinishPickingMediaWithInfo:info];
     }
 }
 
@@ -609,7 +609,7 @@
 }
 
 -(IBAction) cancel:(id)sender {
-    [self.delegate imagePickerControllerDidCancel:self];
+    [self.delegate dlcImagePickerControllerDidCancel:self];
 }
 
 -(IBAction) handlePan:(UIGestureRecognizer *) sender {

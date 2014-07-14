@@ -54,11 +54,11 @@
 }
 
 
--(void) imagePickerControllerDidCancel:(DLCImagePickerController *)picker{
+-(void) dlcImagePickerControllerDidCancel:(DLCImagePickerController *)picker{
     [self dismissModalViewControllerAnimated:YES];
 }
 
--(void) imagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+-(void) dlcImagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     [self dismissModalViewControllerAnimated:YES];
     

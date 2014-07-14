@@ -19,8 +19,8 @@ typedef enum {
 
 @protocol DLCImagePickerDelegate <NSObject>
 @optional
-- (void)imagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
-- (void)imagePickerControllerDidCancel:(DLCImagePickerController *)picker;
+- (void)dlcImagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)dlcImagePickerControllerDidCancel:(DLCImagePickerController *)picker;
 @end
 
 @interface DLCImagePickerController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate> 
