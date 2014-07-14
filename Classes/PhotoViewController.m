@@ -69,13 +69,13 @@
         UIImage *image120 = [image resizedImageToSize:CGSizeMake(120, 120)];
         UIImage *image60 = [image resizedImageToSize:CGSizeMake(60, 60)];
         
-        [library writeImageToSavedPhotosAlbum:image60.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+        /*[library writeImageToSavedPhotosAlbum:image60.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
             
         }];
         
         [library writeImageToSavedPhotosAlbum:image120.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
             
-        }];
+        }];*/
 
         
         /*[library writeImageDataToSavedPhotosAlbum:[info objectForKey:@"data"] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error)

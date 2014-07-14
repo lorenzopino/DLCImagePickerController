@@ -12,6 +12,11 @@
 
 @class DLCImagePickerController;
 
+typedef enum {
+    PhotoSourceTypeCamera = 0,
+    PhotoSourceTypeCameraRoll = 1
+}PhotoSourceType;
+
 @protocol DLCImagePickerDelegate <NSObject>
 @optional
 - (void)imagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
@@ -47,6 +52,10 @@
 @property (nonatomic) BOOL libraryToggleEnabled;
 @property (nonatomic) BOOL cameraToggleEnabled;
 @property (nonatomic) BOOL filtersToggleEnabled;
+
+@property(nonatomic) float maxPhotoSize;
+@property(nonatomic) float minPhotoSize;
+
 
 
 

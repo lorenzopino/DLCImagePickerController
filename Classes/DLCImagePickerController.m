@@ -11,12 +11,19 @@
 #import "FullScreenImagePickerController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "FilterThumbnailView.h"
+#import "Categories.h"
 
 
 #define kStaticBlurSize 2.0f
 
 #define isIOS6 floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1
 #define isIOS7 floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1
+
+#define DEFAULT_MIN_PHOTO_SIZE 480.0
+
+#define DEFAULT_MAX_PHOTO_SIZE 2048.0
+
+
 
 @implementation DLCImagePickerController {
     GPUImageStillCamera *stillCamera;
@@ -30,6 +37,7 @@
     int selectedFilter;
     dispatch_once_t showLibraryOnceToken;
     FilterThumbnailView *noFilterButton;
+    PhotoSourceType photoSourceType;
 }
 
 @synthesize delegate,
@@ -58,6 +66,8 @@
     _filtersToggleEnabled = YES;
     _libraryToggleEnabled = YES;
     _cameraToggleEnabled = YES;
+    _maxPhotoSize = DEFAULT_MAX_PHOTO_SIZE;
+    _minPhotoSize = DEFAULT_MIN_PHOTO_SIZE;
     
 }
 
@@ -483,7 +493,12 @@
     } else {
         // A workaround inside capturePhotoProcessedUpToFilter:withImageOnGPUHandler: would cause the above method to fail,
         // so we just grap the current crop filter output as an aproximation (the size won't match trough)
-        UIImage *img = [cropFilter imageFromCurrentFramebuffer];
+        [staticPicture addTarget:cropFilter];
+        [cropFilter useNextFrameForImageCapture];
+        [staticPicture processImage];
+        
+        UIImage *img = [cropFilter imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
+
         completion(img, nil);
     }
 }
@@ -492,6 +507,7 @@
     [self.photoCaptureButton setEnabled:NO];
     
     if (!isStatic) {
+        photoSourceType = PhotoSourceTypeCamera;
         isStatic = YES;
         
         [self.libraryToggleButton setHidden:YES];
@@ -514,13 +530,50 @@
         [staticPicture processImage];
         
         UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
+        
+        if (MAX(currentFilteredVideoFrame.size.width, currentFilteredVideoFrame.size.height) > _maxPhotoSize) {
+            if (currentFilteredVideoFrame.size.width >= currentFilteredVideoFrame.size.height) {
+                currentFilteredVideoFrame = [currentFilteredVideoFrame resizedImageToSize:CGSizeMake(_maxPhotoSize, _maxPhotoSize*(currentFilteredVideoFrame.size.height/currentFilteredVideoFrame.size.width))];
+            }else{
+                currentFilteredVideoFrame = [currentFilteredVideoFrame resizedImageToSize:CGSizeMake(_maxPhotoSize*(currentFilteredVideoFrame.size.width/currentFilteredVideoFrame.size.height), _maxPhotoSize)];
+            }
+        }
+       
+        if (MIN(currentFilteredVideoFrame.size.width, currentFilteredVideoFrame.size.height) < _minPhotoSize) {
+            [self showMinPhotoSizeAlert];
+            return;
+        }
 
-        NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
+
+        NSMutableDictionary *info = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
+        
+        if (currentFilteredVideoFrame) {
+            [info setValue:[NSNumber numberWithFloat:currentFilteredVideoFrame.size.width] forKey:@"width"];
+            [info setValue:[NSNumber numberWithFloat:currentFilteredVideoFrame.size.height] forKey:@"height"];
+        }
+        if (selectedFilter != 0) {
+            [info setValue: [NSString stringWithFormat:@"filter%i", selectedFilter] forKey:@"filter"];
+        }
+        if (photoSourceType == PhotoSourceTypeCamera) {
+            if (stillCamera.inputCamera) {
+                if (stillCamera.inputCamera.position == AVCaptureDevicePositionFront) {
+                    [info setValue:@"frontCamera" forKey:@"source"];
+                }else if (stillCamera.inputCamera.position == AVCaptureDevicePositionBack){
+                    [info setValue:@"backCamera" forKey:@"source"];
+                }
+            }
+        }else{
+            [info setValue:@"cameraRoll" forKey:@"source"];
+        }
         [self.delegate imagePickerController:self didFinishPickingMediaWithInfo:info];
     }
 }
 
+-(void)showMinPhotoSizeAlert{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Attenzione" message:@"Le dimensioni dell'immagine sono inferiori a quelle minime consentite. Selezionare un'altra immagine." delegate:nil cancelButtonTitle:@"Chiudi" otherButtonTitles:nil,nil];
+    [alert show];
+}
 
 -(IBAction) retakePhoto:(UIButton *)button {
     [self.retakeButton setHidden:YES];
@@ -771,15 +824,27 @@
 #pragma mark - UIImagePickerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (originalImage.size.width < _minPhotoSize || originalImage.size.height < _minPhotoSize) {
+        [self showMinPhotoSizeAlert];
+        [self imagePickerControllerDidCancel:picker];
+        return;
+    }
 
     UIImage* outputImage = [info objectForKey:UIImagePickerControllerEditedImage];
     if (outputImage == nil) {
-        outputImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        outputImage = originalImage;
     }
+    
+    CGFloat shortSide = outputImage.size.width <= outputImage.size.height ? outputImage.size.width : outputImage.size.height;
+    outputImage = [outputImage cropToSize:CGSizeMake(shortSide, shortSide) usingMode:NYXCropModeCenter];
+
     
     if (outputImage) {
         staticPicture = [[GPUImagePicture alloc] initWithImage:outputImage smoothlyScaleOutput:YES];
         staticPictureOriginalOrientation = outputImage.imageOrientation;
+        photoSourceType = PhotoSourceTypeCameraRoll;
         isStatic = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
         [self.cameraToggleButton setHidden:YES];
@@ -792,8 +857,7 @@
         if(![self.filtersToggleButton isSelected]){
             [self showFilters];
         }
-
-    }
+   }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -820,6 +884,7 @@
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
         [libraryToggleButton setImage:[UIImage imageWithContentsOfFile:imagePath] forState:UIControlStateNormal];
+        [libraryToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
     }else{
         [libraryToggleButton setImage:nil forState:UIControlStateNormal];
     }
@@ -842,6 +907,7 @@
                                                                               // we only need the first (most recent) photo -- stop the enumeration
                                                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                                                   [libraryToggleButton setImage:img forState:UIControlStateNormal];
+                                                                                  [libraryToggleButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
                                                                               });
                                                                               NSData *imageData = UIImageJPEGRepresentation([UIImage imageWithCGImage:img.CGImage], 1.0);
                                                                               NSString *writePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"camera_roll_thumb.png"];
