@@ -19,7 +19,7 @@
 #define isIOS6 floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1
 #define isIOS7 floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1
 
-#define DEFAULT_MIN_PHOTO_SIZE 480.0
+#define DEFAULT_MIN_PHOTO_SIZE 300.0
 
 #define DEFAULT_MAX_PHOTO_SIZE 2048.0
 
@@ -826,22 +826,67 @@
 #pragma mark - UIImagePickerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    //NSLog(@"OriginalImage: w:%f h:%f", originalImage.size.width, originalImage.size.height);
     if (originalImage.size.width < _minPhotoSize || originalImage.size.height < _minPhotoSize) {
         [self showMinPhotoSizeAlert];
         [self imagePickerControllerDidCancel:picker];
         return;
     }
-
-    UIImage* outputImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    // ger the original image along with it's size
+    CGSize size = originalImage.size;
+    
+    // crop the crop rect that the user selected
+    CGRect cropRect = [[info objectForKey:UIImagePickerControllerCropRect]
+                       CGRectValue];
+    
+    // create a graphics context of the correct size
+    UIGraphicsBeginImageContext(cropRect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // correct for image orientation
+    UIImageOrientation orientation = [originalImage imageOrientation];
+    if(orientation == UIImageOrientationUp) {
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextScaleCTM(context, 1, -1);
+        cropRect = CGRectMake(cropRect.origin.x,
+                              -cropRect.origin.y,
+                              cropRect.size.width,
+                              cropRect.size.height);
+    } else if(orientation == UIImageOrientationRight) {
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextRotateCTM(context, -M_PI/2);
+        size = CGSizeMake(size.height, size.width);
+        cropRect = CGRectMake(cropRect.origin.y,
+                              cropRect.origin.x,
+                              cropRect.size.height,
+                              cropRect.size.width);
+    } else if(orientation == UIImageOrientationDown) {
+        CGContextTranslateCTM(context, size.width, 0);
+        CGContextScaleCTM(context, -1, 1);
+        cropRect = CGRectMake(-cropRect.origin.x,
+                              cropRect.origin.y,
+                              cropRect.size.width,
+                              cropRect.size.height);
+    }
+    // draw the image in the correct place
+    CGContextTranslateCTM(context, -cropRect.origin.x, -cropRect.origin.y);
+    CGContextDrawImage(context,
+                       CGRectMake(0,0, size.width, size.height),
+                       originalImage.CGImage);
+    // and pull out the cropped image
+    UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //UIImage* outputImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    //NSLog(@"EditedImage: w:%f h:%f", outputImage.size.width, outputImage.size.height);
     if (outputImage == nil) {
         outputImage = originalImage;
     }
     
     CGFloat shortSide = outputImage.size.width <= outputImage.size.height ? outputImage.size.width : outputImage.size.height;
     outputImage = [outputImage cropToSize:CGSizeMake(shortSide, shortSide) usingMode:NYXCropModeCenter];
-
+    
     
     if (outputImage) {
         staticPicture = [[GPUImagePicture alloc] initWithImage:outputImage smoothlyScaleOutput:YES];
@@ -859,7 +904,7 @@
         if(![self.filtersToggleButton isSelected]){
             [self showFilters];
         }
-   }
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
