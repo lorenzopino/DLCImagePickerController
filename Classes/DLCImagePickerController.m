@@ -442,7 +442,9 @@
                    withObject:nil
                    afterDelay:0.25];
     }else{
-        [self captureImage];
+        [self performSelector:@selector(captureImage)
+                   withObject:nil
+                   afterDelay:0.1];
     }
 }
 
@@ -460,7 +462,7 @@
         
         [self prepareFilter];
         [self.retakeButton setHidden:NO];
-        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.photoCaptureButton setTitle:@"OK" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
         if(![self.filtersToggleButton isSelected]){
@@ -469,9 +471,11 @@
     };
     
     
-    AVCaptureDevicePosition currentCameraPosition = stillCamera.inputCamera.position;
-    Class contextClass = NSClassFromString(@"GPUImageContext") ?: NSClassFromString(@"GPUImageOpenGLESContext");
-    if ((currentCameraPosition != AVCaptureDevicePositionFront) || (![contextClass supportsFastTextureUpload])) {
+    //Commentato if per fixare crash su acquisizione con fotocamera centrale
+    
+    //AVCaptureDevicePosition currentCameraPosition = stillCamera.inputCamera.position;
+    //Class contextClass = NSClassFromString(@"GPUImageContext") ?: NSClassFromString(@"GPUImageOpenGLESContext");
+    //if ((currentCameraPosition != AVCaptureDevicePositionFront) || (![contextClass supportsFastTextureUpload])) {
         // Image full-resolution capture is currently possible just on the final (destination filter), so
         // create a new paralel chain, that crops and resizes our image
         [self removeAllTargets];
@@ -490,18 +494,16 @@
         [finalFilter useNextFrameForImageCapture];
         
         [stillCamera capturePhotoAsImageProcessedUpToFilter:finalFilter withCompletionHandler:completion];
-    } else {
+    /*} else {
         // A workaround inside capturePhotoProcessedUpToFilter:withImageOnGPUHandler: would cause the above method to fail,
         // so we just grap the current crop filter output as an aproximation (the size won't match trough)
-        [staticPicture addTarget:cropFilter];
-        [cropFilter useNextFrameForImageCapture];
-        [staticPicture processImage];
         
         UIImage *img = [cropFilter imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
 
         completion(img, nil);
-    }
+    }*/
 }
+
 
 -(IBAction) takePhoto:(id)sender{
     [self.photoCaptureButton setEnabled:NO];
@@ -851,7 +853,7 @@
         [self.flashToggleButton setHidden:YES];
         [self prepareStaticFilter];
         [self.photoCaptureButton setHidden:NO];
-        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.photoCaptureButton setTitle:@"OK" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
         if(![self.filtersToggleButton isSelected]){
