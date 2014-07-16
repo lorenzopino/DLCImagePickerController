@@ -462,9 +462,17 @@
         
         [self prepareFilter];
         [self.retakeButton setHidden:NO];
+        
+        
+        [self.photoCaptureButton setBounds:(CGRect){ 0, 0, 40, 40}];
+        [self.photoCaptureButton.layer setCornerRadius:20];
+        [self.photoCaptureButton setClipsToBounds:YES];
+        [self.photoCaptureButton setBackgroundColor:[UIColor colorWithRed:0.7968 green:0 blue:0 alpha:1]];
+        [self.photoCaptureButton.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:17]];
         [self.photoCaptureButton setTitle:@"OK" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
+        
         if(![self.filtersToggleButton isSelected]){
             [self showFilters];
         }
@@ -596,6 +604,9 @@
         
     }
     
+    [self.photoCaptureButton setBounds:(CGRect){ 0, 0, 70, 70}];
+    [self.photoCaptureButton setBackgroundColor:nil];
+    [self.photoCaptureButton.layer setCornerRadius:0];
     [self.photoCaptureButton setImage:[UIImage imageNamed:@"camera-button"] forState:UIControlStateNormal];
     [self.photoCaptureButton setTitle:nil forState:UIControlStateNormal];
     
@@ -898,9 +909,16 @@
         [self.flashToggleButton setHidden:YES];
         [self prepareStaticFilter];
         [self.photoCaptureButton setHidden:NO];
+
+        [self.photoCaptureButton setBounds:(CGRect){ 0, 0, 40, 40}];
+        [self.photoCaptureButton.layer setCornerRadius:20];
+        [self.photoCaptureButton setClipsToBounds:YES];
+        [self.photoCaptureButton setBackgroundColor:[UIColor colorWithRed:0.7968 green:0 blue:0 alpha:1]];
+        [self.photoCaptureButton.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:17]];
         [self.photoCaptureButton setTitle:@"OK" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
+        
         if(![self.filtersToggleButton isSelected]){
             [self showFilters];
         }
