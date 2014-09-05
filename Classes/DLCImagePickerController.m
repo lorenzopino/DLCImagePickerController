@@ -962,8 +962,7 @@
                                              [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                                              
                                              if (group.numberOfAssets > 0) {
-                                                 [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
-                                                                         options:0
+                                                 [group enumerateAssetsWithOptions:NSEnumerationReverse
                                                                       usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                                                                           if (nil != result) {
                                                                               ALAssetRepresentation *repr = [result defaultRepresentation];
