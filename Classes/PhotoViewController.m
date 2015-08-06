@@ -47,27 +47,27 @@
 -(void) takePhoto:(id)sender{
     DLCImagePickerController *picker = [[DLCImagePickerController alloc] init];
     picker.delegate = self;
-    picker.filtersToggleEnabled = NO;
+    //picker.filtersToggleEnabled = YES;
     picker.blurToggleEnabled = NO;
     
-    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 
 -(void) dlcImagePickerControllerDidCancel:(DLCImagePickerController *)picker{
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) dlcImagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     if (info) {
         //Write to Library
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        UIImage *image = [UIImage imageWithData:[info objectForKey:@"data"]];
-        UIImage *image120 = [image resizedImageToSize:CGSizeMake(120, 120)];
-        UIImage *image60 = [image resizedImageToSize:CGSizeMake(60, 60)];
+//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//        UIImage *image = [UIImage imageWithData:[info objectForKey:@"data"]];
+//        UIImage *image120 = [image resizedImageToSize:CGSizeMake(120, 120)];
+//        UIImage *image60 = [image resizedImageToSize:CGSizeMake(60, 60)];
         
         /*[library writeImageToSavedPhotosAlbum:image60.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
             

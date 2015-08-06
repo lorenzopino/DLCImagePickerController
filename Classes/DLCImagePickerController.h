@@ -38,6 +38,7 @@ typedef enum {
 @property (nonatomic, weak) IBOutlet UIButton *retakeButton;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *filterScrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *filterScrollViewBottomConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *filtersBackgroundImageView;
 @property (nonatomic, weak) IBOutlet UIView *photoBar;
 @property (nonatomic, weak) IBOutlet UIView *topBar;
