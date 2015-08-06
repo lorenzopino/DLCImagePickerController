@@ -99,7 +99,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3007FAF9769443748C023B21 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		129286CFA67B6D0AF8D3AB90 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		6A0D09FF165A1CBE0028E1B6 /* DLCBlurOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLCBlurOverlayView.h; sourceTree = "<group>"; };
 		6A0D0A00165A1CBE0028E1B6 /* DLCBlurOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLCBlurOverlayView.m; sourceTree = "<group>"; };
 		6A0D0A0D165A1FFC0028E1B6 /* focus-crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "focus-crosshair.png"; sourceTree = "<group>"; };
@@ -191,6 +191,7 @@
 		7DEB4DC515E063420078BFAD /* sample1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample1.jpg; path = Samples/sample1.jpg; sourceTree = "<group>"; };
 		7DFAE1B915E22A9F00C8236F /* aqua.acv */ = {isa = PBXFileReference; lastKnownFileType = file; name = aqua.acv; path = Filters/aqua.acv; sourceTree = "<group>"; };
 		C399658FD6034391B6D4C218 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D649C6DB29AF96B123908271 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D962FB0D197697E50003A177 /* ok_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ok_button.png; sourceTree = "<group>"; };
 		D962FB0E197697E50003A177 /* ok_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ok_button@2x.png"; sourceTree = "<group>"; };
 		ED87476819676D94004B8735 /* Categories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Categories.h; sourceTree = "<group>"; };
@@ -260,7 +261,7 @@
 				6A5D9A1A15E0152D001FAD14 /* DLCImagePickerController */,
 				6A5D9A1315E0152D001FAD14 /* Frameworks */,
 				6A5D9A1115E0152D001FAD14 /* Products */,
-				3007FAF9769443748C023B21 /* Pods.xcconfig */,
+				6C6B0F2017EB391E427EC7A1 /* Pods */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -392,6 +393,15 @@
 				6A5D9AA915E0259A001FAD14 /* DLCImagePicker.xib */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		6C6B0F2017EB391E427EC7A1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				129286CFA67B6D0AF8D3AB90 /* Pods.debug.xcconfig */,
+				D649C6DB29AF96B123908271 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		7D0E5AB515E20987009D19C9 /* Filters */ = {
@@ -600,7 +610,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -694,7 +704,7 @@
 		};
 		6A5D9A2915E0152E001FAD14 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3007FAF9769443748C023B21 /* Pods.xcconfig */;
+			baseConfigurationReference = 129286CFA67B6D0AF8D3AB90 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLCImagePickerController/DLCImagePickerController-Prefix.pch";
@@ -702,13 +712,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2ab44d7-dccf-44a8-9f3b-a16c920feae8";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		6A5D9A2A15E0152E001FAD14 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3007FAF9769443748C023B21 /* Pods.xcconfig */;
+			baseConfigurationReference = D649C6DB29AF96B123908271 /* Pods.release.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLCImagePickerController/DLCImagePickerController-Prefix.pch";
